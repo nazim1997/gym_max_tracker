@@ -13,8 +13,6 @@ class AddExerciseDialog extends StatefulWidget {
 class _AddExerciseDialogState extends State<AddExerciseDialog> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _maxController = TextEditingController();
-  final _repsController = TextEditingController();
   String _selectedCategory = "Chest";
 
   final categories = [
@@ -71,26 +69,6 @@ class _AddExerciseDialogState extends State<AddExerciseDialog> {
                   }
                 },
               ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _maxController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: "Max Weight (kg)",
-                  labelStyle: TextStyle(color: Colors.white70),
-                ),
-                style: const TextStyle(color: Colors.white),
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _repsController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: "Repetitions",
-                  labelStyle: TextStyle(color: Colors.white70),
-                ),
-                style: const TextStyle(color: Colors.white),
-              ),
             ],
           ),
         ),
@@ -112,12 +90,6 @@ class _AddExerciseDialogState extends State<AddExerciseDialog> {
               widget.onAdd(Exercise(
                 name: _nameController.text,
                 category: _selectedCategory,
-                max: _maxController.text.isEmpty
-                    ? null
-                    : "${_maxController.text}kg",
-                reps: _repsController.text.isEmpty
-                    ? null
-                    : _repsController.text,
               ));
               Navigator.pop(context);
             }

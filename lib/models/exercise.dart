@@ -1,13 +1,8 @@
 class Exercise {
+  final int? id;
   final String name;
   final String category;
-  final String? max;
-  final String? reps;
-
-  Exercise({
-    required this.name,
-    required this.category,
-    this.max,
-    this.reps,
-  });
+  final DateTime createdDate;
+  
+  Exercise({this.id, required this.name, required this.category, required this.createdDate});
 }

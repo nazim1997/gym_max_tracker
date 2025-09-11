@@ -11,13 +11,13 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Exercise> _exercises = [
-    Exercise(name: "Barbell Row", category: "Back", max: "100.0kg"),
-    Exercise(name: "Bench Press", category: "Chest", max: "87.5kg"),
-    Exercise(name: "Deadlift", category: "Back", max: "145.0kg"),
+    Exercise(name: "Barbell Row", category: "Back"),
+    Exercise(name: "Bench Press", category: "Chest"),
+    Exercise(name: "Deadlift", category: "Back"),
     Exercise(name: "Dips", category: "Triceps"),
     Exercise(name: "Overhead Press", category: "Shoulders"),
     Exercise(name: "Pull-ups", category: "Back"),
-    Exercise(name: "Squat", category: "Legs", max: "130.0kg"),
+    Exercise(name: "Squat", category: "Legs"),
   ];
 
   String _selectedCategory = "All";
@@ -141,9 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: const TextStyle(color: Colors.white),
                         ),
                         subtitle: Text(
-                          e.max != null
-                              ? "Max: ${e.max} | Reps: ${e.reps ?? "-"}"
-                              : "Max: No records",
+                          "Max: No records",
                           style: const TextStyle(color: Colors.white70),
                         ),
                         trailing: IconButton(

@@ -1,5 +1,6 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import '../models/exercise.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -38,5 +39,19 @@ class DatabaseHelper {
         FOREIGN KEY (exercise_id) REFERENCES exercises (id)
       )
     ''');
+  }
+
+  Future<List<Exercise>> getAllExercises() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('exercises');
+
+    return List.generate(maps.length, (i) {
+      return Exercise(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        category: maps[i]['category'],
+        createdDate: DateTime.parse(maps[i]['created_date']),
+      );
+    });
   }
 }

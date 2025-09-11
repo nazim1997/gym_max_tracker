@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../widgets/add_exercise_dialog.dart';
+import '../services/database_helper.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,15 +11,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Exercise> _exercises = [
-    Exercise(name: "Barbell Row", category: "Back"),
-    Exercise(name: "Bench Press", category: "Chest"),
-    Exercise(name: "Deadlift", category: "Back"),
-    Exercise(name: "Dips", category: "Triceps"),
-    Exercise(name: "Overhead Press", category: "Shoulders"),
-    Exercise(name: "Pull-ups", category: "Back"),
-    Exercise(name: "Squat", category: "Legs"),
-  ];
+  List<Exercise> _exercises = [];
 
   String _selectedCategory = "All";
 
@@ -34,6 +27,19 @@ class _HomeScreenState extends State<HomeScreen> {
     "Abdomen",
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    _loadExercises();
+  }
+
+  void _loadExercises() async {
+    final exercises = await DatabaseHelper().getAllExercises();
+    setState(() {
+      _exercises = exercises;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
     final filtered = _selectedCategory == "All"

@@ -24,8 +24,7 @@ class DatabaseHelper {
       CREATE TABLE exercises(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        category TEXT NOT NULL,
-        created_date TEXT NOT NULL
+        category TEXT NOT NULL
       )
     ''');
     
@@ -50,7 +49,6 @@ class DatabaseHelper {
         id: maps[i]['id'],
         name: maps[i]['name'],
         category: maps[i]['category'],
-        createdDate: DateTime.parse(maps[i]['created_date']),
       );
     });
   }

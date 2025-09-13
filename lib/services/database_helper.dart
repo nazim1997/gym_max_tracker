@@ -52,4 +52,12 @@ class DatabaseHelper {
       );
     });
   }
+
+  Future<int> insertExercise(Exercise exercise) async {
+    final db = await database;
+    return await db.insert('exercises', {
+      'name': exercise.name,
+      'category': exercise.category,
+    });
+  }
 }

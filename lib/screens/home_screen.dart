@@ -83,8 +83,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       showDialog(
                         context: context,
                         builder: (context) => AddExerciseDialog(
-                          onAdd: (exercise) {
-                            setState(() => _exercises.add(exercise));
+                          onAdd: (exercise) async{
+                            await DatabaseHelper().insertExercise(exercise);
+                            _loadExercises();
                           },
                         ),
                       );

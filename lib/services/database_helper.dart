@@ -1,6 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import '../models/exercise.dart';
+import '../models/workout_entry.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -58,6 +59,16 @@ class DatabaseHelper {
     return await db.insert('exercises', {
       'name': exercise.name,
       'category': exercise.category,
+    });
+  }
+
+  Future<int> insertWorkoutEntry(WorkoutEntry entry) async {
+    final db = await database;
+    return await db.insert('workout_entries', {
+      'exercise_id': entry.exerciseId,
+      'weight': entry.weight,
+      'reps': entry.reps,
+      'date': entry.date.toIso8601String(),
     });
   }
 }

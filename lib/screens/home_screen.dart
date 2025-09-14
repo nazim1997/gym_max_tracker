@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../widgets/add_exercise_dialog.dart';
 import '../services/database_helper.dart';
+import '../models/workout_entry.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -38,6 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _exercises = exercises;
     });
+    if (_exercises.isNotEmpty) {
+      await DatabaseHelper().insertWorkoutEntry(
+        WorkoutEntry(exerciseId: 1, weight: 80.0, reps: 8, date: DateTime.now())
+      );
+    }
   }
   
   @override

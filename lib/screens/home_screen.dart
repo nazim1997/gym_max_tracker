@@ -153,9 +153,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           e.name,
                           style: const TextStyle(color: Colors.white),
                         ),
-                        subtitle: Text(
-                          "Max: No records",
-                          style: const TextStyle(color: Colors.white70),
+                        subtitle: FutureBuilder<double?>(
+                          future: DatabaseHelper().getMaxWeight(e.id!),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              return Text(
+                                "Max: ${snapshot.data}kg",
+                                style: const TextStyle(color: Colors.white70),
+                              );
+                            }
+                            return const Text(
+                              "Max: No records",
+                              style: TextStyle(color: Colors.white70),
+                            );
+                          },
                         ),
                         trailing: IconButton(
                           icon: const Icon(Icons.show_chart,

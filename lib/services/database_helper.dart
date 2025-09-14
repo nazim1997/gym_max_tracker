@@ -71,4 +71,17 @@ class DatabaseHelper {
       'date': entry.date.toIso8601String(),
     });
   }
+
+  Future<double?> getMaxWeight(int exerciseId) async {
+    final db = await database;
+    final result = await db.rawQuery(
+      'SELECT MAX(weight) as max_weight FROM workout_entries WHERE exercise_id = ?',
+      [exerciseId]
+    );
+    
+    if (result.isNotEmpty && result.first['max_weight'] != null) {
+      return result.first['max_weight'] as double;
+    }
+    return null;
+  }
 }

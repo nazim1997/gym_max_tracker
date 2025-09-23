@@ -39,11 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _exercises = exercises;
     });
-    if (_exercises.isNotEmpty) {
-      await DatabaseHelper().insertWorkoutEntry(
-        WorkoutEntry(exerciseId: 1, weight: 80.0, reps: 8, date: DateTime.now())
-      );
-    }
   }
   
   @override

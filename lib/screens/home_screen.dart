@@ -3,6 +3,7 @@ import '../models/exercise.dart';
 import '../widgets/add_exercise_dialog.dart';
 import '../services/database_helper.dart';
 import '../models/workout_entry.dart';
+import 'exercise_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -168,6 +169,12 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white70),
                           onPressed: () {
                             // TODO: graph screen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ExerciseDetailScreen(exercise: e),
+                              ),
+                            );
                           },
                         ),
                       ),

@@ -145,6 +145,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ExerciseDetailScreen(exercise: e),
+                            ),
+                          );
+                        },
                         title: Text(
                           e.name,
                           style: const TextStyle(color: Colors.white),
@@ -169,12 +177,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               color: Colors.white70),
                           onPressed: () {
                             // TODO: graph screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ExerciseDetailScreen(exercise: e),
-                              ),
-                            );
                           },
                         ),
                       ),

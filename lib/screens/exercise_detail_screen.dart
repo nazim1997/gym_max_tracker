@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/exercise.dart';
+import '../widgets/add_workout_dialog.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
   final Exercise exercise;
@@ -39,7 +40,15 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             padding: EdgeInsets.all(16),
             child: ElevatedButton(
               onPressed: () {
-                // TODO: Open dialog
+                showDialog(
+                  context: context,
+                  builder: (context) => AddWorkoutDialog(
+                    exerciseId: widget.exercise.id!,
+                    onAdd: (workoutEntry) {
+                      // TODO: Save to database and refresh
+                    },
+                  ),
+                );
               },
               child: Text('Add Max Weight'),
               style: ElevatedButton.styleFrom(

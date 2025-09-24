@@ -60,7 +60,16 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
         TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel')),
         TextButton(
           onPressed: () {
-            // TODO: Create WorkoutEntry and call onAdd
+            if (_weightController.text.isNotEmpty && _repsController.text.isNotEmpty) {
+              final workoutEntry = WorkoutEntry(
+                exerciseId: widget.exerciseId,
+                weight: double.parse(_weightController.text),
+                reps: int.parse(_repsController.text),
+                date: _selectedDate,
+              );
+              widget.onAdd(workoutEntry);
+              Navigator.pop(context);
+            }
           },
           child: Text('Add Record'),
         ),

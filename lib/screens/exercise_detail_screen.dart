@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../widgets/add_workout_dialog.dart';
 import '../services/database_helper.dart';
+import '../models/workout_entry.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
   final Exercise exercise;
@@ -29,12 +30,45 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       body: Column(
         children: [
           // Placeholder for graph
-          Container(
-            height: 300,
-            margin: EdgeInsets.all(16),
-            color: Color(0xFF1E1E1E),
-            child: Center(
-              child: Text('Graph goes here', style: TextStyle(color: Colors.white)),
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Workout History', style: TextStyle(color: Colors.white, fontSize: 18)),
+                  SizedBox(height: 16),
+                  Expanded(
+                    child: FutureBuilder<List<WorkoutEntry>>(
+                      future: DatabaseHelper().getWorkoutEntries(widget.exercise.id!),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) return CircularProgressIndicator();
+
+                        final entries = snapshot.data!;
+                        if (entries.isEmpty) {
+                          return Text('No workout records', style: TextStyle(color: Colors.white70));
+                        }
+
+                        return ListView.builder(
+                          itemCount: entries.length,
+                          itemBuilder: (context, index) {
+                            final entry = entries[index];
+                            return Card(
+                              color: Color(0xFF1E1E1E),
+                              child: ListTile(
+                                title: Text('${entry.weight}kg × ${entry.reps} reps', 
+                                           style: TextStyle(color: Colors.white)),
+                                subtitle: Text('${entry.date.day}/${entry.date.month}/${entry.date.year}',
+                                             style: TextStyle(color: Colors.white70)),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           

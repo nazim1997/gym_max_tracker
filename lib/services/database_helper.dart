@@ -84,4 +84,24 @@ class DatabaseHelper {
     }
     return null;
   }
+
+  Future<List<WorkoutEntry>> getWorkoutEntries(int exerciseId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'workout_entries',
+      where: 'exercise_id = ?',
+      whereArgs: [exerciseId],
+      orderBy: 'date DESC',
+    );
+    
+    return List.generate(maps.length, (i) {
+      return WorkoutEntry(
+        id: maps[i]['id'],
+        exerciseId: maps[i]['exercise_id'],
+        weight: maps[i]['weight'],
+        reps: maps[i]['reps'],
+        date: DateTime.parse(maps[i]['date']),
+      );
+    });
+  }
 }

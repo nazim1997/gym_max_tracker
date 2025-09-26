@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../widgets/add_workout_dialog.dart';
+import '../services/database_helper.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
   final Exercise exercise;
@@ -20,6 +21,10 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
         title: Text(widget.exercise.name),
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context, true),
+        ),
       ),
       body: Column(
         children: [
@@ -44,8 +49,10 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                   context: context,
                   builder: (context) => AddWorkoutDialog(
                     exerciseId: widget.exercise.id!,
-                    onAdd: (workoutEntry) {
-                      // TODO: Save to database and refresh
+                    onAdd: (workoutEntry) async {
+                      await DatabaseHelper().insertWorkoutEntry(workoutEntry);
+                      // Refresh the screen to show updated data
+                      setState(() {});
                     },
                   ),
                 );

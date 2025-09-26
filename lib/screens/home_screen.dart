@@ -145,13 +145,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: ListTile(
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          final result = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ExerciseDetailScreen(exercise: e),
                             ),
                           );
+                          // Only refresh if data was changed
+                          if (result == true) {
+                            _loadExercises();
+                          }
                         },
                         title: Text(
                           e.name,

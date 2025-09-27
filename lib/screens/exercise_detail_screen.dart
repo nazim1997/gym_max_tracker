@@ -92,7 +92,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                                 subtitle: Text('${entry.date.day}/${entry.date.month}/${entry.date.year}',
                                              style: TextStyle(color: Colors.white70)),
                                 trailing: IconButton(
-                                  icon: Icon(Icons.delete, color: Colors.red),
+                                  icon: Icon(Icons.delete, color: Colors.grey),
                                   onPressed: () async {
                                     await DatabaseHelper().deleteWorkoutEntry(entry.id!);
                                     setState(() {}); // Refresh the screen to update both chart and list

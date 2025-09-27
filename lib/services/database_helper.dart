@@ -104,4 +104,9 @@ class DatabaseHelper {
       );
     });
   }
+
+  Future<int> deleteWorkoutEntry(int id) async {
+    final db = await database;
+    return await db.delete('workout_entries', where: 'id = ?', whereArgs: [id]);
+  }
 }

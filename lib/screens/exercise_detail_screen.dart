@@ -3,6 +3,7 @@ import '../models/exercise.dart';
 import '../widgets/add_workout_dialog.dart';
 import '../services/database_helper.dart';
 import '../models/workout_entry.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
   final Exercise exercise;
@@ -30,6 +31,36 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       body: Column(
         children: [
           // Placeholder for graph
+          Container(
+            height: 200,
+            padding: EdgeInsets.all(16),
+            child: FutureBuilder<List<WorkoutEntry>>(
+              future: DatabaseHelper().getWorkoutEntries(widget.exercise.id!),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text('No data for chart', style: TextStyle(color: Colors.white)));
+                }
+
+                final entries = snapshot.data!.reversed.toList(); // Oldest first for chart
+                final spots = entries.asMap().entries.map((entry) {
+                  return FlSpot(entry.key.toDouble(), entry.value.weight);
+                }).toList();
+
+                return LineChart(
+                  LineChartData(
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: spots,
+                        isCurved: true,
+                        color: Colors.white,
+                      ),
+                    ],
+                    backgroundColor: Color(0xFF1E1E1E),
+                  ),
+                );
+              },
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: EdgeInsets.all(16),
@@ -72,7 +103,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             ),
           ),
           
-          Spacer(),
+          // Spacer(),
           
           // Add Max Weight button
           Padding(

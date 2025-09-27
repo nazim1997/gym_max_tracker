@@ -19,7 +19,9 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: const Color(0xFF1E1E1E),
       title: Text('Add Workout Entry'),
+      // color: Color(0xFF1E1E1E),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -100,7 +100,13 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
       ),
       actions: [
         TextButton(onPressed: () => Navigator.pop(context), child: Text('Cancel', style: TextStyle(color: Colors.white))),
-        TextButton(
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          ),
           onPressed: () {
             if (_weightController.text.isNotEmpty && _repsController.text.isNotEmpty) {
               final workoutEntry = WorkoutEntry(
@@ -113,7 +119,7 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
               Navigator.pop(context);
             }
           },
-          child: Text('Add Record', style: TextStyle(color: Colors.white)),
+          child: Text('Add Record'),
         ),
       ],
     );

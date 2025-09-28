@@ -4,6 +4,7 @@ import '../widgets/add_workout_dialog.dart';
 import '../services/database_helper.dart';
 import '../models/workout_entry.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../widgets/confirm_delete_dialog.dart';
 
 class ExerciseDetailScreen extends StatefulWidget {
   final Exercise exercise;
@@ -93,9 +94,18 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                                              style: TextStyle(color: Colors.white70)),
                                 trailing: IconButton(
                                   icon: Icon(Icons.delete, color: Colors.grey),
-                                  onPressed: () async {
-                                    await DatabaseHelper().deleteWorkoutEntry(entry.id!);
-                                    setState(() {}); // Refresh the screen to update both chart and list
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => ConfirmDeleteDialog(
+                                        title: 'Delete Workout Entry',
+                                        content: 'Are you sure you want to delete this workout entry?',
+                                        onConfirm: () async {
+                                          await DatabaseHelper().deleteWorkoutEntry(entry.id!);
+                                          setState(() {});
+                                        },
+                                      ),
+                                    );
                                   },
                                 ),
                               ),

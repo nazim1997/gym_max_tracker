@@ -26,12 +26,34 @@ class _AddWorkoutDialogState extends State<AddWorkoutDialog> {
         children: [
           TextField(
             controller: _weightController,
-            decoration: InputDecoration(labelText: 'Weight (kg)'),
+            decoration: InputDecoration(
+              labelText: 'Weight (kg)',
+              labelStyle: TextStyle(color: Colors.white70),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            style: TextStyle(color: Colors.white),
+            cursorColor: Colors.white,
             keyboardType: TextInputType.number,
           ),
           TextField(
             controller: _repsController,
-            decoration: InputDecoration(labelText: 'Reps'),
+            decoration: InputDecoration(
+              labelText: 'Reps',
+              labelStyle: TextStyle(color: Colors.white70),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+            ),
+            style: TextStyle(color: Colors.white),
+            cursorColor: Colors.white,
             keyboardType: TextInputType.number,
           ),
           // We'll add date picker later

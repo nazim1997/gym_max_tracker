@@ -43,8 +43,15 @@ class _AddExerciseDialogState extends State<AddExerciseDialog> {
                 decoration: const InputDecoration(
                   labelText: "Exercise Name",
                   labelStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
                 style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
                 validator: (val) =>
                     val == null || val.isEmpty ? "Enter exercise name" : null,
               ),
@@ -56,6 +63,12 @@ class _AddExerciseDialogState extends State<AddExerciseDialog> {
                 decoration: const InputDecoration(
                   labelText: "Category",
                   labelStyle: TextStyle(color: Colors.white70),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
                 ),
                 items: categories
                     .map((c) => DropdownMenuItem(

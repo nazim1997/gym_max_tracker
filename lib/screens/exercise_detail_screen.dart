@@ -16,6 +16,7 @@ class ExerciseDetailScreen extends StatefulWidget {
 }
 
 class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
+  String _timeFilter = 'All Time';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +32,27 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Text('Time Range: ', style: TextStyle(color: Colors.white)),
+                DropdownButton<String>(
+                  value: _timeFilter,
+                  dropdownColor: Color(0xFF1E1E1E),
+                  style: TextStyle(color: Colors.white),
+                  items: ['3 Months', '6 Months', '1 Year', 'All Time']
+                      .map((filter) => DropdownMenuItem(value: filter, child: Text(filter)))
+                      .toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _timeFilter = value!;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
           // Placeholder for graph
           Container(
             height: 200,
@@ -54,9 +76,37 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                         spots: spots,
                         isCurved: true,
                         color: Colors.white,
+                        dotData: FlDotData(show: true),
                       ),
                     ],
                     backgroundColor: Color(0xFF1E1E1E),
+                    titlesData: FlTitlesData(
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          reservedSize: 40,
+                          getTitlesWidget: (value, meta) {
+                            return Text('${value.toInt()}kg', 
+                                       style: TextStyle(color: Colors.white70, fontSize: 10));
+                          },
+                        ),
+                      ),
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            if (value.toInt() >= entries.length) return Text('');
+                            final date = entries[value.toInt()].date;
+                            return Text('${date.month}/${date.day}',
+                                       style: TextStyle(color: Colors.white70, fontSize: 10));
+                          },
+                        ),
+                      ),
+                      topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                    ),
+                    minY: 0,
+                    maxY: (spots.map((s) => s.y).reduce((a, b) => a > b ? a : b) * 1.2),
                   ),
                 );
               },

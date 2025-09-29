@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           builder: (context, snapshot) {
                             if (snapshot.hasData && snapshot.data != null) {
                               return Text(
-                                "Max: ${snapshot.data}kg",
+                                "Max: ${snapshot.data} kg",
                                 style: const TextStyle(color: Colors.white70),
                               );
                             }

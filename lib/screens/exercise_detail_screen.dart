@@ -36,7 +36,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
             padding: EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                Text('Time Range: ', style: TextStyle(color: Colors.white)),
+                Text('Time Range : ', style: TextStyle(color: Colors.white)),
                 DropdownButton<String>(
                   value: _timeFilter,
                   dropdownColor: Color(0xFF1E1E1E),
@@ -64,10 +64,29 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                   return Center(child: Text('No data for chart', style: TextStyle(color: Colors.white)));
                 }
 
-                final entries = snapshot.data!.reversed.toList(); // Oldest first for chart
-                final spots = entries.asMap().entries.map((entry) {
-                  return FlSpot(entry.key.toDouble(), entry.value.weight);
-                }).toList();
+                final allEntries = snapshot.data!;
+
+                // Filter based on time range
+                final cutoffDate = _timeFilter == 'All Time' ? null :
+                                   _timeFilter == '3 Months' ? DateTime.now().subtract(Duration(days: 90)) :
+                                   _timeFilter == '6 Months' ? DateTime.now().subtract(Duration(days: 180)) :
+                                   DateTime.now().subtract(Duration(days: 365));
+
+                final entries = cutoffDate == null 
+                    ? allEntries 
+                    : allEntries.where((e) => e.date.isAfter(cutoffDate)).toList();
+
+                entries.sort((a, b) => a.date.compareTo(b.date)); // Oldest first
+
+                if (entries.isEmpty) {
+                  return Center(child: Text('No data for this time range', style: TextStyle(color: Colors.white)));
+                }
+
+                final spots = entries.isEmpty 
+                  ? [FlSpot(0, 0)] // Placeholder spot to show empty graph
+                  : entries.asMap().entries.map((entry) {
+                      return FlSpot(entry.key.toDouble(), entry.value.weight);
+                    }).toList();
 
                 return LineChart(
                   LineChartData(
@@ -76,7 +95,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                         spots: spots,
                         isCurved: true,
                         color: Colors.white,
-                        dotData: FlDotData(show: true),
+                        dotData: FlDotData(show: entries.isNotEmpty),
                       ),
                     ],
                     backgroundColor: Color(0xFF1E1E1E),
@@ -106,7 +125,7 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                       rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
                     minY: 0,
-                    maxY: (spots.map((s) => s.y).reduce((a, b) => a > b ? a : b) * 1.2),
+                    maxY: entries.isEmpty ? 100 : (spots.map((s) => s.y).reduce((a, b) => a > b ? a : b) * 1.2),
                   ),
                 );
               },

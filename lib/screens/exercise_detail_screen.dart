@@ -32,25 +32,29 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Row(
-              children: [
-                Text('Time Range : ', style: TextStyle(color: Colors.white)),
-                DropdownButton<String>(
-                  value: _timeFilter,
-                  dropdownColor: Color(0xFF1E1E1E),
-                  style: TextStyle(color: Colors.white),
-                  items: ['3 Months', '6 Months', '1 Year', 'All Time']
-                      .map((filter) => DropdownMenuItem(value: filter, child: Text(filter)))
-                      .toList(),
-                  onChanged: (value) {
-                    setState(() {
-                      _timeFilter = value!;
-                    });
-                  },
-                ),
-              ],
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            decoration: BoxDecoration(
+              color: Color(0xFF1E1E1E),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: DropdownButton<String>(
+              value: _timeFilter,
+              dropdownColor: Color(0xFF1E1E1E),
+              style: TextStyle(color: Colors.white),
+              underline: SizedBox(), // Remove underline
+              alignment: Alignment.topRight, // Center the text
+              items: ['3 Months', '6 Months', '1 Year', 'All Time']
+                  .map((filter) => DropdownMenuItem(
+                        value: filter, 
+                        child: Text(filter, textAlign: TextAlign.center),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  _timeFilter = value!;
+                });
+              },
             ),
           ),
           // Placeholder for graph

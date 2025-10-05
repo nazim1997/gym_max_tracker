@@ -32,29 +32,46 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
       ),
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            decoration: BoxDecoration(
-              color: Color(0xFF1E1E1E),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: DropdownButton<String>(
-              value: _timeFilter,
-              dropdownColor: Color(0xFF1E1E1E),
-              style: TextStyle(color: Colors.white),
-              underline: SizedBox(), // Remove underline
-              alignment: Alignment.topRight, // Center the text
-              items: ['3 Months', '6 Months', '1 Year', 'All Time']
-                  .map((filter) => DropdownMenuItem(
-                        value: filter, 
-                        child: Text(filter, textAlign: TextAlign.center),
-                      ))
-                  .toList(),
-              onChanged: (value) {
-                setState(() {
-                  _timeFilter = value!;
-                });
-              },
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Max weight on left
+                FutureBuilder<double?>(
+                  future: DatabaseHelper().getMaxWeight(widget.exercise.id!),
+                  builder: (context, snapshot) {
+                    final maxWeight = snapshot.data ?? 0;
+                    return Text(
+                      '${maxWeight.toInt()} kg',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  },
+                ),
+
+                // Dropdown on right
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1E1E1E),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: DropdownButton<String>(
+                    value: _timeFilter,
+                    dropdownColor: Color(0xFF1E1E1E),
+                    style: TextStyle(color: Colors.white),
+                    underline: SizedBox(),
+                    items: ['Last 3 months', 'Last 6 months', 'Year', 'All time']
+                        .map((f) => DropdownMenuItem(value: f, child: Text(f)))
+                        .toList(),
+                    onChanged: (v) => setState(() => _timeFilter = v!),
+                  ),
+                ),
+              ],
             ),
           ),
           // Placeholder for graph
@@ -82,10 +99,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
 
                 entries.sort((a, b) => a.date.compareTo(b.date)); // Oldest first
 
-                if (entries.isEmpty) {
-                  return Center(child: Text('No data for this time range', style: TextStyle(color: Colors.white)));
-                }
-
                 final spots = entries.isEmpty 
                   ? [FlSpot(0, 0)] // Placeholder spot to show empty graph
                   : entries.asMap().entries.map((entry) {
@@ -103,6 +116,8 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                       ),
                     ],
                     backgroundColor: Color(0xFF1E1E1E),
+                    gridData: FlGridData(show: false), // Add this line
+                    borderData: FlBorderData(show: false), // Add this line
                     titlesData: FlTitlesData(
                       leftTitles: AxisTitles(
                         sideTitles: SideTitles(
@@ -120,7 +135,9 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
                           getTitlesWidget: (value, meta) {
                             if (value.toInt() >= entries.length) return Text('');
                             final date = entries[value.toInt()].date;
-                            return Text('${date.month}/${date.day}',
+                            final monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                                               'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                            return Text('${monthNames[date.month - 1]} ${date.day} \n ${date.year}',
                                        style: TextStyle(color: Colors.white70, fontSize: 10));
                           },
                         ),
@@ -192,8 +209,6 @@ class _ExerciseDetailScreenState extends State<ExerciseDetailScreen> {
               ),
             ),
           ),
-          
-          // Spacer(),
           
           // Add Max Weight button
           Padding(

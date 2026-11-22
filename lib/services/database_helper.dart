@@ -109,4 +109,8 @@ class DatabaseHelper {
     final db = await database;
     return await db.delete('workout_entries', where: 'id = ?', whereArgs: [id]);
   }
-}
+
+  Future<int> deleteExercise(int id) async {
+    final db = await database;
+    return await db.delete('exercises', where: 'id = ?', whereArgs: [id]);
+  }}

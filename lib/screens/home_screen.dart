@@ -4,6 +4,7 @@ import '../widgets/add_exercise_dialog.dart';
 import '../services/database_helper.dart';
 import '../models/workout_entry.dart';
 import 'exercise_detail_screen.dart';
+import '../widgets/confirm_delete_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -157,6 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             _loadExercises();
                           }
                         },
+                        onLongPress: () => _showDeleteConfirmation(e),
                         title: Text(
                           e.name,
                           style: const TextStyle(color: Colors.white),
@@ -193,5 +195,23 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  void _showDeleteConfirmation(Exercise e) {
+    showDialog(
+      context: context,
+      builder: (_) => ConfirmDeleteDialog(
+        title: 'Delete Exercise',
+        content: 'Are you sure you want to delete "${e.name}"?',
+        onConfirm: () {
+          _deleteExercise(e.id!);
+        },
+      ),
+    );
+  }
+
+  void _deleteExercise(int exerciseId) {
+    DatabaseHelper().deleteExercise(exerciseId);
+    _loadExercises();
   }
 }
